@@ -20,6 +20,18 @@ service: aws-nodejs # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
+  environment:
+    CORS_ORIGIN: ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+    MONGO_DB_URL: ${file(./secrets.yml):MONGO_DB_URL}
+
+custom:
+  stages:
+    dev:
+      vars:
+        URL-Access-Control-Allow-Origin: '*'
+    prod:
+      vars:
+        URL-Access-Control-Allow-Origin: projetobitus.netlify.com
 
 # you can overwrite defaults here
 #  stage: dev
@@ -55,10 +67,29 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.helloWorld
+  areas:
+    handler: handler.areas
     events:
-      - http: GET hello
+      - http:
+          path: areas
+          method: get
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+  createProfile:
+    handler: handler.createProfile
+    events:
+      - http:
+          path: profile
+          method: post
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

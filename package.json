@@ -1,0 +1,22 @@
+{
+  "name": "bit-us-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ProjetoBitUs/bit-us-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ProjetoBitUs/bit-us-backend/issues"
+  },
+  "homepage": "https://github.com/ProjetoBitUs/bit-us-backend#readme",
+  "dependencies": {
+    "mongoose": "^5.4.18"
+  }
+}
