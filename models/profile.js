@@ -5,11 +5,11 @@ const ProfileSchema = new mongoose.Schema({
   description: String,
   image: String,
   about: String,
-  work: String,
+  projects: String,
   location: String,
   education: String,
   areas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Area' }],
-  links: [String],
+  socialNetwork: String,
   active: Boolean
 });
 

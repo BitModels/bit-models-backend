@@ -31,7 +31,7 @@ custom:
         URL-Access-Control-Allow-Origin: '*'
     prod:
       vars:
-        URL-Access-Control-Allow-Origin: projetobitus.netlify.com
+        URL-Access-Control-Allow-Origin: "https://projetobitus.netlify.com"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -78,12 +78,45 @@ functions:
               - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
             headers:
               - Content-Type
+  area:
+    handler: handler.area
+    events:
+      - http:
+          path: areas/{id}
+          method: get
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
   createProfile:
     handler: handler.createProfile
     events:
       - http:
           path: profile
           method: post
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+  profiles:
+    handler: handler.profiles
+    events:
+      - http:
+          path: profiles
+          method: get
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+  profile:
+    handler: handler.profile
+    events:
+      - http:
+          path: profiles/{id}
+          method: get
           cors:
             origins:
               - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}

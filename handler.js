@@ -22,9 +22,57 @@ module.exports.areas = async (event, context) => {
   }
 }
 
-module.exports.createProfile = async (event, context) => {
+module.exports.area = async (event, context) => {
   await connectToDatabase()
 
+  const area = await Area.findById(event.pathParameters.id)
+  .populate({
+    path: 'profiles',
+    match: { active: true }
+  })
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(area),
+    headers: {
+      "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+    },
+  }
+}
+
+module.exports.profiles = async (event, context) => {
+  await connectToDatabase()
+
+  const profiles = await Profile.find().where('active', true)
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(profiles),
+    headers: {
+      "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+    },
+  }
+}
+
+module.exports.profile = async (event, context) => {
+  await connectToDatabase()
+
+  const profile = await Profile.findById(event.pathParameters.id)
+  .populate({
+    path: 'areas'
+  })
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(profile),
+    headers: {
+      "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+    },
+  }
+}
+
+module.exports.createProfile = async (event, context) => {
+  await connectToDatabase()
   const profile = await Profile.create(JSON.parse(event.body))
 
   for (const areaId of profile.areas) {
