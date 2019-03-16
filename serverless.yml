@@ -31,7 +31,7 @@ custom:
         URL-Access-Control-Allow-Origin: '*'
     prod:
       vars:
-        URL-Access-Control-Allow-Origin: "https://projetobitus.netlify.com"
+        URL-Access-Control-Allow-Origin: "https://bitmodels.netlify.com"
 
 # you can overwrite defaults here
 #  stage: dev
