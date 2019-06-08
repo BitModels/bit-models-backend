@@ -23,6 +23,7 @@ provider:
   environment:
     CORS_ORIGIN: ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
     MONGO_DB_URL: ${file(./secrets.yml):MONGO_DB_URL}
+    SECRET: ${file(./secrets.yml):SECRET}
 
 custom:
   stages:
@@ -32,6 +33,9 @@ custom:
     prod:
       vars:
         URL-Access-Control-Allow-Origin: "https://bitmodels.netlify.com"
+
+plugins:
+  - serverless-offline
 
 # you can overwrite defaults here
 #  stage: dev
@@ -122,6 +126,29 @@ functions:
               - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
             headers:
               - Content-Type
+  adminLogin:
+    handler: handler.adminLogin
+    events:
+      - http:
+          path: adminLogin
+          method: post
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+  adminGetProfiles:
+    handler: handler.adminGetProfiles
+    events:
+      - http:
+          path: adminGetProfiles
+          method: get
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
