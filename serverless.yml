@@ -143,6 +143,10 @@ functions:
       - http:
           path: adminGetProfiles
           method: get
+          request:
+            parameters:
+              querystrings:
+                token: true
           cors:
             origins:
               - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}

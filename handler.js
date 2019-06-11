@@ -74,7 +74,16 @@ module.exports.profile = async (event, context) => {
 
 module.exports.createProfile = async (event, context) => {
   await connectToDatabase()
-  const profile = await Profile.create(JSON.parse(event.body))
+
+  var dateTime = require('node-datetime');
+
+  const profileData = {
+    ...JSON.parse(event.body),
+    registrationDate: dateTime.create()._now
+  }
+  console.log('date', dateTime.create()._now)
+  console.log('profile', profileData)
+  const profile = await Profile.create(profileData)
 
   for (const areaId of profile.areas) {
     const area = await Area.findById(areaId)
@@ -150,7 +159,7 @@ module.exports.adminGetProfiles = async (event, context) => {
     const profiles = await Profile.find()
     return {
       statusCode: 200,
-      body: JSON.stringify({ profiles }),
+      body: JSON.stringify(profiles),
       headers: {
         "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
       },

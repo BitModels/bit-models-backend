@@ -10,7 +10,8 @@ const ProfileSchema = new mongoose.Schema({
   education: String,
   areas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Area' }],
   socialNetwork: String,
-  active: Boolean
+  active: Boolean,
+  registrationDate: Date
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);
