@@ -78,8 +78,7 @@ module.exports.createProfile = async (event, context) => {
   var dateTime = require('node-datetime');
 
   const profileData = {
-    ...JSON.parse(event.body),
-    registrationDate: dateTime.create()._now
+    ...JSON.parse(event.body)
   }
   console.log('date', dateTime.create()._now)
   console.log('profile', profileData)
@@ -160,6 +159,40 @@ module.exports.adminGetProfiles = async (event, context) => {
     return {
       statusCode: 200,
       body: JSON.stringify(profiles),
+      headers: {
+        "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+      },
+    }
+  } catch(error) {
+    if (error.name === 'JsonWebTokenError'){
+      return {
+        statusCode: 401,
+        headers: {
+          "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+        },
+      }
+    }
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
+      },
+    }
+  }
+}
+
+module.exports.enableProfile = async (event, context) => {
+  try {
+    await connectToDatabase()
+
+    const jwt  = require('jsonwebtoken');
+    var legit = jwt.verify(event.queryStringParameters.token, process.env.SECRET);
+
+    await Profile.findOneAndUpdate({ _id: event.queryStringParameters.id }, { active: event.queryStringParameters.enable })
+    const profile = await Profile.findById(event.queryStringParameters.id)
+    return {
+      statusCode: 200,
+      body: JSON.stringify(profile),
       headers: {
         "Access-Control-Allow-Origin": process.env.CORS_ORIGIN,
       },

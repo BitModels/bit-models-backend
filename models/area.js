@@ -6,6 +6,9 @@ const AreaSchema = new mongoose.Schema({
   imageDescription: String,
   image: String,
   profiles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+},
+{
+  timestamps: true
 });
 
 module.exports = mongoose.model("Area", AreaSchema);

@@ -152,6 +152,23 @@ functions:
               - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
             headers:
               - Content-Type
+  enableProfile:
+    handler: handler.enableProfile
+    events:
+      - http:
+          path: enableProfile
+          method: post
+          equest:
+            parameters:
+              querystrings:
+                token: true
+                id: true
+                enable: true
+          cors:
+            origins:
+              - ${self:custom.stages.${opt:stage, self:provider.stage}.vars.URL-Access-Control-Allow-Origin}
+            headers:
+              - Content-Type
 
 
 #    The following are a few example events you can configure

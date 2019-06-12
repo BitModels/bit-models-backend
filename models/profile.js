@@ -11,7 +11,9 @@ const ProfileSchema = new mongoose.Schema({
   areas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Area' }],
   socialNetwork: String,
   active: Boolean,
-  registrationDate: Date
+},
+{
+  timestamps: true
 });
 
 module.exports = mongoose.model("Profile", ProfileSchema);
